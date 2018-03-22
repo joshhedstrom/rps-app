@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>rps-app</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-	<link rel="stylesheet" href="./style.css">
-</head>
-<body>
-	<header>
-		<nav>
+	<head>
+		<meta charset="UTF-8">
+		<title>rps-app</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+		<link rel="stylesheet" href="./style.css">
+	</head>
+	<body>
+		<header>
+			<nav>
+				
+			</nav>
+		</header>
+		<main>
+			<section id="startElement">
+				
+			</section>
+			<section id="gameElement">
+				
+			</section>
+		</main>
+		<footer>
 			
-		</nav>
-	</header>
-	<main>
-		<section id="startElement">
-			
-		</section>
-		<section id="gameElement">
-			
-		</section>
-	</main>
-	<footer>
-		
-	</footer>
-	<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-	<script src="./app.js"></script>
-</body>
+		</footer>
+		<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+		<script>
+		// Initialize Firebase
+		var config = {
+		apiKey: "AIzaSyA-wBibZXmEuNijBHLwe_2rcgNDwZ1PZE8",
+		authDomain: "rps-app-e21df.firebaseapp.com",
+		databaseURL: "https://rps-app-e21df.firebaseio.com",
+		projectId: "rps-app-e21df",
+		storageBucket: "rps-app-e21df.appspot.com",
+		messagingSenderId: "155885645294"
+		};
+		firebase.initializeApp(config);
+		</script>
+		<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+		<script src="./app.js"></script>
+	</body>
 </html>

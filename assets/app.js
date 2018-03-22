@@ -14,6 +14,8 @@ let rock;
 let paper;
 let scissors;
 
+let gameCounter = 0;
+
 
 function gameLoop(userOneChoice, userTwoChoice) {
 
@@ -43,20 +45,25 @@ function gameLoop(userOneChoice, userTwoChoice) {
 
 
 function userOneWins() {
+    $('#message').text("Player One Wins!")
     oneWins++;
     twoLosses++;
+    gameCounter++;
     resetGame();
 
 }
 
 function userTwoWins() {
+    $('#message').text("Player Two Wins!")
     twoWins++;
     oneLosses++;
+    gameCounter++;
     resetGame();
 
 }
 
 function tieGame() {
+    $('#message').text("Tie Game!")
     ties++;
     resetGame();
 

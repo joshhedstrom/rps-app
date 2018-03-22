@@ -2,9 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>rps-app</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-		<link rel="stylesheet" href="./style.css">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="./assets/style.css">
 	</head>
 	<body>
 		<header>
@@ -12,13 +15,34 @@
 				
 			</nav>
 		</header>
-		<main>
-			<section id="startElement">
-				
-			</section>
-			<section id="gameElement">
-				
-			</section>
+		<main class="container">
+			<div class="row">
+				<section id="startElement" class="col-12">
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, totam, tempora molestiae reiciendis, quisquam quos maiores officiis quas, repudiandae nobis ex velit. Quia deleniti reprehenderit voluptates veniam, nulla cupiditate blanditiis.
+				</section>
+			</div>
+			<div class="row" id="message"></div>
+			<div class="row text-center" id="gameElement">
+				<div class="col">
+					<div id="playerOneDiv">
+						<h5>Player One:</h5>
+						<a id="rock" href=""><img src="./assets/rock.jpg" alt="player one rock"></a>
+						<a id="paper" href=""><img src="./assets/paper.jpg" alt="player one paper"></a>
+						<a id="scissors" href=""><img src="./assets/scissors.jpg" alt="player one scissors"></a>
+						<h5>Choose your Weapon!</h5>
+					</div>
+				</div>
+				<div class="col">
+					<div id="playerTwoDiv">
+						<h5>Player Two:</h5>
+						<a id="rock" href=""><img src="./assets/rock.jpg" alt="player two rock"></a>
+						<a id="paper" href=""><img src="./assets/paper.jpg" alt="player two paper"></a>
+						<a id="scissors" href=""><img src="./assets/scissors.jpg" alt="player two scissors"></a>
+						<h5>Choose your Weapon!</h5>
+					</div>
+				</div>
+			</div>
+			<div class="row" id="chatBox"></div>
 		</main>
 		<footer>
 			
@@ -40,7 +64,6 @@
 		src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-		<script src="./app.js"></script>
+		<script src="./assets/app.js"></script>
 	</body>
 </html>

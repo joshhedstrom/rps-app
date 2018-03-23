@@ -1,5 +1,10 @@
 // $(document).ready(function() {
 
+let userOneActive = false;
+let userTwoActive = false;
+
+let userOneName;
+let userTwoName;
 
 let userOneChoice;
 let userTwoChoice;
@@ -22,7 +27,14 @@ let scissors;
 
 let gameCounter = 0;
 
-
+function gameStart() {
+    if (!userOneActive) {
+        userOneActive = true;
+    } else if (userOneActive) {
+        userTwoActive = true;
+        $('#gameElement').attr('style', 'display: block;');
+    }
+}
 
 
 function gameLoop(userOneChoice, userTwoChoice) {
@@ -61,7 +73,6 @@ function userOneWins() {
     updateStats();
     userOnePicked = false;
     userTwoPicked = false;
-
 }
 
 function userTwoWins() {
@@ -73,7 +84,6 @@ function userTwoWins() {
     updateStats();
     userOnePicked = false;
     userTwoPicked = false;
-
 }
 
 function tieGame() {
@@ -83,12 +93,13 @@ function tieGame() {
     updateStats();
     userOnePicked = false;
     userTwoPicked = false;
-
 }
+
 
 function resetGame() {
 
 }
+
 
 function updateStats(scoreOne, scoreTwo, ties) {
     //session update user 1 wins/losses
@@ -96,7 +107,9 @@ function updateStats(scoreOne, scoreTwo, ties) {
     //master update user 1 wins/losses
     //master update user 2 wins/losses
     //update if tie 
+
 }
+
 
 $('#oneRock').click(function() {
     onePick = "rock";
@@ -129,14 +142,16 @@ $('#twoScissors').click(function() {
     check();
 });
 
+
 function check() {
     if (userOnePicked && userTwoPicked) {
         gameLoop(onePick, twoPick);
-    }
-    else {
+    } else {
         $('#message').text("Waiting for the other player's selection...")
     }
 }
 
 
-    // });
+
+
+// });

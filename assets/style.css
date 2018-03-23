@@ -1,15 +1,31 @@
-body {
-	background-color: tan;
+body
+{
+    background-color: tan;
 }
 
-img {
-	height: 100px;
-	width: auto;
-	border-radius: 50px;
+img
+{
+    width: auto;
+    height: 100px;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 50px;
 }
 
-img:hover {
-	border-color: black;
-	border-width: 2px;
-	border-style: solid;
+img:hover
+{
+    border-width: 3px;
+    border-style: solid;
+    border-color: black;
+}
+
+.stats
+{
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 15px;
+    margin: 2px;
 }

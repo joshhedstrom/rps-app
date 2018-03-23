@@ -1,5 +1,22 @@
 // $(document).ready(function() {
 
+const config = {
+    apiKey: "AIzaSyA-wBibZXmEuNijBHLwe_2rcgNDwZ1PZE8",
+    authDomain: "rps-app-e21df.firebaseapp.com",
+    databaseURL: "https://rps-app-e21df.firebaseio.com",
+    projectId: "rps-app-e21df",
+    storageBucket: "rps-app-e21df.appspot.com",
+    messagingSenderId: "155885645294"
+};
+firebase.initializeApp(config);
+
+const preObject = $('#object');
+
+const dbRefObject = firebase.database().ref().child('object');
+
+dbRefObject.on('value', snap => console.log(snap.val()));
+
+
 let userOneActive = false;
 let userTwoActive = false;
 

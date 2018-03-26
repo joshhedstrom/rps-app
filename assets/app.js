@@ -10,12 +10,7 @@ const config = {
 };
 firebase.initializeApp(config);
 
-const preObject = $('#object');
-
-const dbRefObject = firebase.database().ref().child('object');
-
-dbRefObject.on('value', snap => console.log(snap.val()));
-
+const database = firebase.database()
 
 let userOneActive = false;
 let userTwoActive = false;
@@ -82,7 +77,7 @@ function gameLoop(userOneChoice, userTwoChoice) {
 
 
 function userOneWins() {
-    $('#message').text("Player One Wins!")
+    $('.message').text("Player One Wins!")
     oneWins++;
     twoLosses++;
     gameCounter++;
@@ -93,7 +88,7 @@ function userOneWins() {
 }
 
 function userTwoWins() {
-    $('#message').text("Player Two Wins!")
+    $('.message').text("Player Two Wins!")
     twoWins++;
     oneLosses++;
     gameCounter++;
@@ -104,57 +99,81 @@ function userTwoWins() {
 }
 
 function tieGame() {
-    $('#message').text("Tie Game!")
+    $('.message').text("Tie Game!")
     ties++;
-    resetGame();
     updateStats();
+    resetGame();
     userOnePicked = false;
     userTwoPicked = false;
 }
 
 
 function resetGame() {
+    $("#oneChoice, #twoChoice").text("Choose your Weapon!");
 
 }
 
 
-function updateStats(scoreOne, scoreTwo, ties) {
-    //session update user 1 wins/losses
-    //session update user 2 wins/losses
-    //master update user 1 wins/losses
-    //master update user 2 wins/losses
-    //update if tie 
-
+function updateStats() {
+    database.ref().set({
+        scores: {
+            user1wins: oneWins,
+            user1losses: oneLosses,
+            user2wins: twoWins,
+            user2losses: twoLosses,
+            tieGames: ties,
+        },
+    })
 }
+
+updateStats();
+
+database.ref().on("value", function(snapshot) {
+    $("#user1sessionWins").text(userOneName + "'s session Wins: " + snapshot.val().scores.user1wins)
+    $("#user1sessionLosses").text(userOneName + "'s session Losses: " + snapshot.val().scores.user1losses)
+    $("#user2sessionWins").text(userTwoName + "'s session Wins: " + snapshot.val().scores.user2wins)
+    $("#user2sessionLosses").text(userTwoName + "'s session Losses: " + snapshot.val().scores.user2losses)
+    // $("#user1totalWins").text(userOneName + "'s total Wins: " + snapshot.scores.)
+    // $("#user1totalLosses").text(userOneName + "'s total Losses: " + snapshot.scores.)
+    // $("#user2totalWins").text(userTwoName + "'s total Wins: " + snapshot.scores.)
+    // $("#user2totalLosses").text(userTwoName + "'s total Losses: " + snapshot.scores.)
+})
+
 
 
 $('#oneRock').click(function() {
     onePick = "rock";
+    $('#oneChoice').text(onePick);
     userOnePicked = true;
     check();
 });
 $('#onePaper').click(function() {
     onePick = "paper";
+    $('#oneChoice').text(onePick);
     userOnePicked = true;
     check();
 });
 $('#oneScissors').click(function() {
     onePick = "scissors";
+    $('#oneChoice').text(onePick);
     userOnePicked = true;
     check();
 });
 $('#twoRock').click(function() {
     twoPick = "rock";
+    $('#twoChoice').text(twoPick);
     userTwoPicked = true;
     check();
 });
 $('#twoPaper').click(function() {
     twoPick = "paper";
+    $('#twoChoice').text(twoPick);
     userTwoPicked = true;
     check();
 });
 $('#twoScissors').click(function() {
     twoPick = "scissors";
+    $('#twoChoice').text(twoPick);
     userTwoPicked = true;
     check();
 });

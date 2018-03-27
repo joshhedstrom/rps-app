@@ -20,45 +20,52 @@
 		<main class="container">
 			<div class="row">
 				<section id="startElement" class="col-12">
-
-					
+					<h4>Ready to Play? Enter your name below:</h4>
+					<div class="form-group row">
+						<label for="example-text-input" class="col-2 col-form-label">Name:</label>
+						<div class="col-10">
+							<input class="form-control" type="text" placeholder="Enter your name" id="example-text-input">
+						</div>
+					</div>
 				</section>
 			</div>
 			
 			<div class="row text-center" id="gameElement">
 				<div class="col">
-					<div id="playerOneDiv">
+					<div id="playerOneDiv" style="display: ;">
 						<h4 class="message"></h5>
 						<h5>Player One:</h5>
 						<a id="oneRock"><img src="./assets/rock.jpg" alt="player one rock"></a>
 						<a id="onePaper"><img src="./assets/paper.jpg" alt="player one paper"></a>
 						<a id="oneScissors"><img src="./assets/scissors.jpg" alt="player one scissors"></a>
 						<h6 id="oneChoice">Choose your Weapon!</h6>
+						<div class="row">
+							<p class="col stats" id="user1sessionWins">Player 1 Wins: 0</p>
+							<p class="col stats" id="user1sessionLosses">Player 1 Losses: 0</p>
+						</div>
 					</div>
 				</div>
 				<div class="col">
-					<div id="playerTwoDiv">
+					<div id="playerTwoDiv" style="display: ;">
 						<h4 class="message"></h5>
 						<h5>Player Two:</h5>
 						<a id="twoRock"><img src="./assets/rock.jpg" alt="player two rock"></a>
 						<a id="twoPaper"><img src="./assets/paper.jpg" alt="player two paper"></a>
 						<a id="twoScissors"><img src="./assets/scissors.jpg" alt="player two scissors"></a>
 						<h6 id="twoChoice">Choose your Weapon!</h6>
+						<div class="row">
+							<p class="col stats" id="user2sessionWins">Player 2 Wins: 0</p>
+							<p class="col stats" id="user2sessionLosses">Player 2 Losses: 0</p>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div id="statsElement">
-				<div class="row">
-					<p class="col stats" id="user1sessionWins">Player 1 Session Wins: 0</p>
-					<p class="col stats" id="user1sessionLosses">Player 1 Session Losses: 0</p>
-					<p class="col stats" id="user2sessionWins">Player 2 Session Wins: 0</p>
-					<p class="col stats" id="user2sessionLosses">Player 2 Session Losses: 0</p>
-				</div>
 				<!-- <div class="row">
-					<p class="col stats" id="user1totalWins">Player 1 Total Wins: 0</p>
-					<p class="col stats" id="user1totalLosses">Player 1 Total Losses: 0</p>
-					<p class="col stats" id="user2totalWins">Player 2 Total Wins: 0</p>
-					<p class="col stats" id="user2totalLosses">Player 2 Total Losses: 0</p>
+							<p class="col stats" id="user1totalWins">Player 1 Total Wins: 0</p>
+							<p class="col stats" id="user1totalLosses">Player 1 Total Losses: 0</p>
+							<p class="col stats" id="user2totalWins">Player 2 Total Wins: 0</p>
+							<p class="col stats" id="user2totalLosses">Player 2 Total Losses: 0</p>
 				</div> -->
 			</div>
 			<div class="row" id="chatBox"></div>

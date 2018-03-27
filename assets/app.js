@@ -39,6 +39,21 @@ $(document).ready(function() {
 
     let gameCounter = 0;
 
+
+    $('#submit').click(function() {
+        if (!userOneActive) {
+           userOneName = $('#nameInput').val().trim();
+           userOneActive = true;
+        } else if(userOneActive && !userTwoActive) {
+            userTwoName = $('#nameInput').val().trim();
+            userTwoActive = true;
+        } else if( userOneActive && userTwoActive) {
+            $('.message').text("Sorry, the game is already in use! \n Try again in a few minutes.")
+        }
+    });
+
+
+
     function gameStart() {
         if (!userOneActive) {
             userOneActive = true;

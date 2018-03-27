@@ -20,7 +20,7 @@
 		<main class="container">
 			<div class="row">
 				<section id="startElement" class="col-12">
-					<h4>Ready to Play? Enter your name below:</h4>
+					<h4 id="topMessage">Ready to Play? Enter your name below:</h4>
 					<div class="form-group row">
 						<label for="example-text-input" class="col-1 col-form-label">Name:</label>
 						<div class="col-9">
@@ -35,7 +35,7 @@
 			
 			<div class="row text-center" id="gameElement">
 				<div class="col">
-					<div id="playerOneDiv" style="display: ;">
+					<div id="playerOneDiv" style="display: none;">
 						<h4 class="message"></h5>
 						<h5>Player One:</h5>
 						<a id="oneRock"><img src="./assets/rock.jpg" alt="player one rock"></a>
@@ -49,7 +49,7 @@
 					</div>
 				</div>
 				<div class="col">
-					<div id="playerTwoDiv" style="display: ;">
+					<div id="playerTwoDiv" style="display: none;">
 						<h4 class="message"></h5>
 						<h5>Player Two:</h5>
 						<a id="twoRock"><img src="./assets/rock.jpg" alt="player two rock"></a>

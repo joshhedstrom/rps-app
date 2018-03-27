@@ -41,17 +41,19 @@ let gameCounter = 0;
 
 
 function onStart() {
-    database.ref().child("users").once('value', function(snap) {
+    database.ref("users").once('value', function(snap) {
         console.log(snap);
-        if (snap.val().users == null) {
+        if (snap.val() == null) {
             updateAllStats();
-            // userOneActive = snap.val().users.userOneActive;
-            // userTwoActive = snap.val().users.userTwoActive;
-            console.log("updated all stats")
-        } else if (snap.val().users !== null) {
             userOneActive = snap.val().users.userOneActive;
             userTwoActive = snap.val().users.userTwoActive;
 
+            console.log("updated all stats")
+
+        } else if (snap.val().users !== null) {
+            // userOneActive = snap.val().users.userOneActive;
+            // userTwoActive = snap.val().users.userTwoActive;
+            updateAllStats();
 
             console.log("updated active")
         }

@@ -12,8 +12,8 @@ firebase.initializeApp(config);
 
 const database = firebase.database()
 
-let userOneActive = false;
-let userTwoActive = false;
+let userOneActive;
+let userTwoActive;
 
 let userOneName;
 let userTwoName;
@@ -48,14 +48,14 @@ function onStart() {
             userOneActive = snap.val().users.userOneActive;
             userTwoActive = snap.val().users.userTwoActive;
 
-            console.log("updated all stats")
+            console.log("found users null")
 
         } else if (snap.val().users !== null) {
             // userOneActive = snap.val().users.userOneActive;
             // userTwoActive = snap.val().users.userTwoActive;
-            updateAllStats();
+            updateStats();
 
-            console.log("updated active")
+            console.log("users not null")
         }
     })
 
@@ -64,7 +64,8 @@ onStart();
 
 
 
-$('#submit').click(function() {
+$('#submit').click(function(event) {
+    event.preventDefault()
     if (!userOneActive && !userTwoActive) {
         userOneName = $('#nameInput').val().trim();
         userOneActive = true;
@@ -77,7 +78,7 @@ $('#submit').click(function() {
         userTwoActive = true;
         $('#playerTwoDiv').attr('style', 'display: block;');
         $('#nameInput').val("");
-        // updateStats();
+        updateAllStats();
         console.log("userTwoActive")
     } else if (userOneActive && userTwoActive) {
         $('#topMessage').text("Sorry, the game is already in use! \n Try again in a few minutes.")
@@ -148,6 +149,7 @@ function tieGame() {
 function resetGame() {
     $("#oneChoice, #twoChoice").text("Choose your Weapon!");
     if (gameCounter == 7) {
+        $('#gameElement').attr('style', 'display: none;');
         $('.message').text("Thanks for playing! " + userOneName + " had " + oneWins + " wins, and " + userTwoName + " had " + twoWins + " wins.")
     }
 
@@ -184,15 +186,15 @@ function updateStats() {
     });
 }
 
-updateStats();
+// updateStats();
 
 database.ref().on("value", function(snapshot) {
-    $("#user1sessionWins").text(userOneName + "'s session Wins: " + snapshot.val().scores.user1wins)
-    $("#user1sessionLosses").text(userOneName + "'s session Losses: " + snapshot.val().scores.user1losses)
-    $("#user2sessionWins").text(userTwoName + "'s session Wins: " + snapshot.val().scores.user2wins)
-    $("#user2sessionLosses").text(userTwoName + "'s session Losses: " + snapshot.val().scores.user2losses)
-    // userOneActive = snapshot.val().users.userOneActive;
-    // userTwoActive = snapshot.val().users.userTwoActive;
+    $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.user1wins)
+    $("#user1sessionLosses").text(userOneName + "'s Losses: " + snapshot.val().scores.user1losses)
+    $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.user2wins)
+    $("#user2sessionLosses").text(userTwoName + "'s Losses: " + snapshot.val().scores.user2losses)
+    snapshot.val().users.userOneActive = userOneActive;
+    snapshot.val().users.userTwoActive = userTwoActive;
     // console.log(snapshot)
 });
 

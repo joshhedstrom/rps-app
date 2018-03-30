@@ -15,14 +15,14 @@ const database = firebase.database()
 // let userOneActive;
 // let userTwoActive;
 
-let userOneName;
-let userTwoName;
+let userOneName = "";
+let userTwoName = "";
 
-let userOneChoice;
-let userTwoChoice;
+let userOneChoice = "";
+let userTwoChoice = "";
 
-let onePick;
-let twoPick;
+let onePick = "";
+let twoPick = "";
 
 let userOnePicked = false;
 let userTwoPicked = false;
@@ -38,54 +38,74 @@ let gameCounter = 0;
 
 
 database.ref("users").once('value', function(snap) {
-    if (snap.val() == null) {
-        var userOneActive = true;
-        var userTwoActive = false;
-        database.ref().set({
-            users: {
-                userOneActive: userOneActive,
-                userTwoActive: userTwoActive,
-            },
-            scores: {
-                user1wins: oneWins,
-                user1losses: oneLosses,
-                user2wins: twoWins,
-                user2losses: twoLosses,
-                tieGames: ties,
-                gameCount: gameCounter,
-            },
-        });
-        // userOneActive = snap.val().users.userOneActive;
-        // userTwoActive = snap.val().users.userTwoActive;
-        console.log("found users null")
-        $('#playerOneDiv').attr('style', 'display: block;');
-        return userOneActive;
-        return userTwoActive;
+        if (snap.val() == null) {
+            var userOneActive = true;
+            var userTwoActive = false;
+            database.ref().set({
+                users: {
+                    userOneActive: userOneActive,
+                    userTwoActive: userTwoActive,
 
-    } else if (snap.val().users !== null) {
-        var userOneActive = true;
-        var userTwoActive = true;
-        database.ref().set({
-            users: {
-                userOneActive: true,
-                userTwoActive: true,
-            },
-            scores: {
-                user1wins: oneWins,
-                user1losses: oneLosses,
-                user2wins: twoWins,
-                user2losses: twoLosses,
-                tieGames: ties,
-                gameCount: gameCounter,
-            },
-        });
-        console.log("users not null")
-        $('#playerTwoDiv').attr('style', 'display: block;');
-        return userOneActive;
-        return userTwoActive;
-    }
-})
-// fullGameLoop();
+                    userOneName: userOneName,
+                    userTwoName: userTwoName,
+
+                    userOneChoice: userOneChoice,
+                    userTwoChoice: userTwoChoice,
+                    onePick: onePick,
+                    twoPick: twoPick,
+                    userOnePicked: false,
+                    userTwoPicked: false,
+                },
+                scores: {
+                    user1wins: oneWins,
+                    user1losses: oneLosses,
+                    user2wins: twoWins,
+                    user2losses: twoLosses,
+                    tieGames: ties,
+                    gameCount: gameCounter,
+                },
+            });
+            // userOneActive = snap.val().users.userOneActive;
+            // userTwoActive = snap.val().users.userTwoActive;
+            console.log("found users null")
+            $('#playerOneDiv').attr('style', 'display: block;');
+            return userOneActive;
+            return userTwoActive;
+
+        } else if (snap.val().users !== null) {
+            var userOneActive = true;
+            var userTwoActive = true;
+            database.ref().update({
+                users: {
+                    userOneActive: true,
+                    userTwoActive: true,
+
+                //     userOneName: userOneName,
+                //     userTwoName: userTwoName,
+                //     userOneChoice: userOneChoice,
+                //     userTwoChoice: userTwoChoice,
+                //     onePick: onePick,
+                //     twoPick: twoPick,
+                //     userOnePicked: false,
+                //     userTwoPicked: false,
+                // },
+                // scores: {
+                //     user1wins: oneWins,
+                //     user1losses: oneLosses,
+                //     user2wins: twoWins,
+                //     user2losses: twoLosses,
+                //     tieGames: ties,
+                //     gameCount: gameCounter,
+                },
+            });
+            updateStats();
+            console.log("users not null")
+            $('#playerTwoDiv').attr('style', 'display: block;');
+            return userOneActive;
+            return userTwoActive;
+        }
+    })
+    // fullGameLoop();
 
 // $('#submit').click(function(event) {
 //    event.preventDefault()
@@ -116,143 +136,144 @@ database.ref("users").once('value', function(snap) {
 
 // function fullGameLoop() {
 
-    $('#oneRock').click(function() {
-        onePick = "rock";
-        $('#oneChoice').text(onePick);
-        userOnePicked = true;
-        check();
+$('#oneRock').click(function() {
+    onePick = "rock";
+    $('#oneChoice').text(onePick);
+    userOnePicked = true;
+    check();
+});
+$('#onePaper').click(function() {
+    onePick = "paper";
+    $('#oneChoice').text(onePick);
+    userOnePicked = true;
+    check();
+});
+$('#oneScissors').click(function() {
+    onePick = "scissors";
+    $('#oneChoice').text(onePick);
+    userOnePicked = true;
+    check();
+});
+$('#twoRock').click(function() {
+    twoPick = "rock";
+    $('#twoChoice').text(twoPick);
+    userTwoPicked = true;
+    check();
+});
+$('#twoPaper').click(function() {
+    twoPick = "paper";
+    $('#twoChoice').text(twoPick);
+    userTwoPicked = true;
+    check();
+});
+$('#twoScissors').click(function() {
+    twoPick = "scissors";
+    $('#twoChoice').text(twoPick);
+    userTwoPicked = true;
+    check();
+});
+
+function gameLoop(userOneChoice, userTwoChoice) {
+
+    if (userOneChoice === userTwoChoice) {
+        tieGame();
+
+    } else if (userOneChoice === "rock" && userTwoChoice === "scissors") {
+        userOneWins();
+
+    } else if (userOneChoice === "rock" && userTwoChoice === "paper") {
+        userTwoWins();
+
+    } else if (userOneChoice === "paper" && userTwoChoice === "rock") {
+        userOneWins();
+
+    } else if (userOneChoice === "paper" && userTwoChoice === "scissors") {
+        userTwoWins();
+
+    } else if (userOneChoice === "scissors" && userTwoChoice === "rock") {
+        userTwoWins();
+
+    } else if (userOneChoice === "scissors" && userTwoChoice === "paper") {
+        userOneWins();
+
+    }
+}
+
+
+function userOneWins() {
+    $('.message').text("Player One Wins!")
+    oneWins++;
+    twoLosses++;
+    gameCounter++;
+    updateStats();
+    resetGame();
+    userOnePicked = false;
+    userTwoPicked = false;
+}
+
+function userTwoWins() {
+    $('.message').text("Player Two Wins!")
+    twoWins++;
+    oneLosses++;
+    gameCounter++;
+    updateStats();
+    resetGame();
+    userOnePicked = false;
+    userTwoPicked = false;
+}
+
+function tieGame() {
+    $('.message').text("Tie Game!")
+    ties++;
+    updateStats();
+    resetGame();
+    userOnePicked = false;
+    userTwoPicked = false;
+}
+
+
+function resetGame() {
+    $("#oneChoice, #twoChoice").text("Choose your Weapon!");
+    if (gameCounter == 7) {
+        $('#gameElement').attr('style', 'display: none;');
+        $('.message').text("Thanks for playing! " + userOneName + " had " + oneWins + " wins, and " + userTwoName + " had " + twoWins + " wins.")
+    }
+
+}
+
+
+// database.ref().on("value", function(snapshot) {
+//     $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.user1wins)
+//     $("#user1sessionLosses").text(userOneName + "'s Losses: " + snapshot.val().scores.user1losses)
+//     $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.user2wins)
+//     $("#user2sessionLosses").text(userTwoName + "'s Losses: " + snapshot.val().scores.user2losses)
+//         // snapshot.val().users.userOneActive = userOneActive;
+//         // snapshot.val().users.userTwoActive = userTwoActive;
+//         // console.log(snapshot)
+// });
+
+
+function check() {
+    if (userOnePicked && userTwoPicked) {
+        gameLoop(onePick, twoPick);
+    } else {
+        $('#message').text("Waiting for the other player's selection...");
+    }
+}
+
+
+function updateStats() {
+    database.ref().push({
+        scores: {
+            user1wins: oneWins,
+            user1losses: oneLosses,
+            user2wins: twoWins,
+            user2losses: twoLosses,
+            tieGames: ties,
+            gameCount: gameCounter,
+        },
     });
-    $('#onePaper').click(function() {
-        onePick = "paper";
-        $('#oneChoice').text(onePick);
-        userOnePicked = true;
-        check();
-    });
-    $('#oneScissors').click(function() {
-        onePick = "scissors";
-        $('#oneChoice').text(onePick);
-        userOnePicked = true;
-        check();
-    });
-    $('#twoRock').click(function() {
-        twoPick = "rock";
-        $('#twoChoice').text(twoPick);
-        userTwoPicked = true;
-        check();
-    });
-    $('#twoPaper').click(function() {
-        twoPick = "paper";
-        $('#twoChoice').text(twoPick);
-        userTwoPicked = true;
-        check();
-    });
-    $('#twoScissors').click(function() {
-        twoPick = "scissors";
-        $('#twoChoice').text(twoPick);
-        userTwoPicked = true;
-        check();
-    });
-
-    function gameLoop(userOneChoice, userTwoChoice) {
-
-        if (userOneChoice === userTwoChoice) {
-            tieGame();
-
-        } else if (userOneChoice === "rock" && userTwoChoice === "scissors") {
-            userOneWins();
-
-        } else if (userOneChoice === "rock" && userTwoChoice === "paper") {
-            userTwoWins();
-
-        } else if (userOneChoice === "paper" && userTwoChoice === "rock") {
-            userOneWins();
-
-        } else if (userOneChoice === "paper" && userTwoChoice === "scissors") {
-            userTwoWins();
-
-        } else if (userOneChoice === "scissors" && userTwoChoice === "rock") {
-            userTwoWins();
-
-        } else if (userOneChoice === "scissors" && userTwoChoice === "paper") {
-            userOneWins();
-
-        }
-    }
-
-
-    function userOneWins() {
-        $('.message').text("Player One Wins!")
-        oneWins++;
-        twoLosses++;
-        gameCounter++;
-        updateStats();
-        resetGame();
-        userOnePicked = false;
-        userTwoPicked = false;
-    }
-
-    function userTwoWins() {
-        $('.message').text("Player Two Wins!")
-        twoWins++;
-        oneLosses++;
-        gameCounter++;
-        updateStats();
-        resetGame();
-        userOnePicked = false;
-        userTwoPicked = false;
-    }
-
-    function tieGame() {
-        $('.message').text("Tie Game!")
-        ties++;
-        updateStats();
-        resetGame();
-        userOnePicked = false;
-        userTwoPicked = false;
-    }
-
-
-    function resetGame() {
-        $("#oneChoice, #twoChoice").text("Choose your Weapon!");
-        if (gameCounter == 7) {
-            $('#gameElement').attr('style', 'display: none;');
-            $('.message').text("Thanks for playing! " + userOneName + " had " + oneWins + " wins, and " + userTwoName + " had " + twoWins + " wins.")
-        }
-
-    }
-
-
-    // database.ref().on("value", function(snapshot) {
-    //     $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.user1wins)
-    //     $("#user1sessionLosses").text(userOneName + "'s Losses: " + snapshot.val().scores.user1losses)
-    //     $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.user2wins)
-    //     $("#user2sessionLosses").text(userTwoName + "'s Losses: " + snapshot.val().scores.user2losses)
-    //         // snapshot.val().users.userOneActive = userOneActive;
-    //         // snapshot.val().users.userTwoActive = userTwoActive;
-    //         // console.log(snapshot)
-    // });
-
-
-    function check() {
-        if (userOnePicked && userTwoPicked) {
-            gameLoop(onePick, twoPick);
-        } else {
-            $('#message').text("Waiting for the other player's selection...");
-        }
-    }
-
-
-    function updateStats() {
-        database.ref().set({
-            scores: {
-                user1wins: oneWins,
-                user1losses: oneLosses,
-                user2wins: twoWins,
-                user2losses: twoLosses,
-                tieGames: ties,
-                gameCount: gameCounter,
-            },
-        });
-    }
+}
 // }
 // });
+

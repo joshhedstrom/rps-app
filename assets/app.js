@@ -1,5 +1,6 @@
 // $(document).ready(function() {
 
+
 const config = {
     apiKey: "AIzaSyA-wBibZXmEuNijBHLwe_2rcgNDwZ1PZE8",
     authDomain: "rps-app-e21df.firebaseapp.com",
@@ -12,40 +13,31 @@ firebase.initializeApp(config);
 
 const database = firebase.database()
 
-// let userOneActive;
-// let userTwoActive;
+let userOneName;
+let userTwoName;
 
-let userOneName = "";
-let userTwoName = "";
+let userOneChoice;
+let userTwoChoice;
 
-let userOneChoice = "";
-let userTwoChoice = "";
+let onePick;
+let twoPick;
 
-let onePick = "";
-let twoPick = "";
+let userOnePicked;
+let userTwoPicked;
 
-let userOnePicked = false;
-let userTwoPicked = false;
-
-let oneWins = 0;
-let oneLosses = 0;
-let twoWins = 0;
-let twoLosses = 0;
-let ties = 0;
+let oneWins;
+let twoWins;
 
 
-let gameCounter = 0;
+let gameCounter;
 
 
-database.ref("users").once('value', function(snap) {
+database.ref("/users").once('value').then(function(snap) {
         if (snap.val() == null) {
             var userOneActive = true;
             var userTwoActive = false;
             database.ref().set({
                 users: {
-                    userOneActive: userOneActive,
-                    userTwoActive: userTwoActive,
-
                     userOneName: userOneName,
                     userTwoName: userTwoName,
 
@@ -58,51 +50,17 @@ database.ref("users").once('value', function(snap) {
                 },
                 scores: {
                     user1wins: oneWins,
-                    user1losses: oneLosses,
                     user2wins: twoWins,
-                    user2losses: twoLosses,
-                    tieGames: ties,
                     gameCount: gameCounter,
                 },
             });
-            // userOneActive = snap.val().users.userOneActive;
-            // userTwoActive = snap.val().users.userTwoActive;
             console.log("found users null")
             $('#playerOneDiv').attr('style', 'display: block;');
-            return userOneActive;
-            return userTwoActive;
 
         } else if (snap.val().users !== null) {
-            var userOneActive = true;
-            var userTwoActive = true;
-            database.ref().update({
-                users: {
-                    userOneActive: true,
-                    userTwoActive: true,
-
-                //     userOneName: userOneName,
-                //     userTwoName: userTwoName,
-                //     userOneChoice: userOneChoice,
-                //     userTwoChoice: userTwoChoice,
-                //     onePick: onePick,
-                //     twoPick: twoPick,
-                //     userOnePicked: false,
-                //     userTwoPicked: false,
-                // },
-                // scores: {
-                //     user1wins: oneWins,
-                //     user1losses: oneLosses,
-                //     user2wins: twoWins,
-                //     user2losses: twoLosses,
-                //     tieGames: ties,
-                //     gameCount: gameCounter,
-                },
-            });
             updateStats();
             console.log("users not null")
             $('#playerTwoDiv').attr('style', 'display: block;');
-            return userOneActive;
-            return userTwoActive;
         }
     })
     // fullGameLoop();
@@ -114,25 +72,23 @@ database.ref("users").once('value', function(snap) {
 
 
 
-// $('#submit').click(function(event) {
-//     event.preventDefault()
-//     if (!userOneActive && !userTwoActive) {
-//         userOneName = $('#nameInput').val().trim();
-//         // userOneActive = true;
-//         // $('#playerOneDiv').attr('style', 'display: block;');
-//         // $('#nameInput').val("");
-//         console.log("userOneActive")
-//     } else if (userOneActive && !userTwoActive) {
-//         userTwoName = $('#nameInput').val().trim();
-//         // userTwoActive = true;
-//         // $('#playerTwoDiv').attr('style', 'display: block;');
-//         // $('#nameInput').val("");
-//         console.log("userTwoActive")
-//     } else if (userOneActive && userTwoActive) {
-//         $('#topMessage').text("Sorry, the game is already in use! \n Try again in a few minutes.")
-//         $('#nameInput').val("");
-//     }
-// });
+$('#submit').click(function(event) {
+    event.preventDefault()
+    if (!userOneActive && !userTwoActive) {
+        userOneName = $('#nameInput').val().trim();
+        // $('#playerOneDiv').attr('style', 'display: block;');
+        $('#nameInput').val("");
+        console.log("userOneActive")
+    } else if (userOneActive && !userTwoActive) {
+        userTwoName = $('#nameInput').val().trim();
+        // $('#playerTwoDiv').attr('style', 'display: block;');
+        $('#nameInput').val("");
+        console.log("userTwoActive")
+    } else if (userOneActive && userTwoActive) {
+        $('#topMessage').text("Sorry, the game is already in use! \n Try again in a few minutes.")
+        $('#nameInput').val("");
+    }
+});
 
 // function fullGameLoop() {
 
@@ -205,9 +161,9 @@ function userOneWins() {
     oneWins++;
     twoLosses++;
     gameCounter++;
-    updateStats();
+    // updateStats();
     resetGame();
-    userOnePicked = false;
+    userOneWinsPicked = false;
     userTwoPicked = false;
 }
 
@@ -216,7 +172,7 @@ function userTwoWins() {
     twoWins++;
     oneLosses++;
     gameCounter++;
-    updateStats();
+    // updateStats();
     resetGame();
     userOnePicked = false;
     userTwoPicked = false;
@@ -225,7 +181,7 @@ function userTwoWins() {
 function tieGame() {
     $('.message').text("Tie Game!")
     ties++;
-    updateStats();
+    // updateStats();
     resetGame();
     userOnePicked = false;
     userTwoPicked = false;
@@ -241,16 +197,31 @@ function resetGame() {
 
 }
 
+function userOne() {
+    database.ref().on("value", function(snapshot) {
+        userTwoName = snapshot.val().users.userTwoName;
+        userTwoChoice = snapshot.val().users.userTwoChoice;
+        twoPick = snapshot.val().users.twoPick;
+        userTwoPicked = snapshot.val().users.userTwoPicked;
+        twoWins = snapshot.val().scores.twoWins;
+        $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.user1wins);
+        $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.user2wins);
+        updateStats();
+    });
+}
 
-// database.ref().on("value", function(snapshot) {
-//     $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.user1wins)
-//     $("#user1sessionLosses").text(userOneName + "'s Losses: " + snapshot.val().scores.user1losses)
-//     $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.user2wins)
-//     $("#user2sessionLosses").text(userTwoName + "'s Losses: " + snapshot.val().scores.user2losses)
-//         // snapshot.val().users.userOneActive = userOneActive;
-//         // snapshot.val().users.userTwoActive = userTwoActive;
-//         // console.log(snapshot)
-// });
+function userTwo() {
+    database.ref().on("value", function(snapshot) {
+        userOneName = snapshot.val().users.userOneName;
+        userOneChoice = snapshot.val().users.userOneChoice;
+        onePick = snapshot.val().users.onePick;
+        userOnePicked = snapshot.val().users.userOnePicked;
+        oneWins = snapshot.val().scores.oneWins;
+        $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.user1wins);
+        $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.user2wins);
+        updateStats();
+    })
+}
 
 
 function check() {
@@ -263,17 +234,23 @@ function check() {
 
 
 function updateStats() {
-    database.ref().push({
+    database.ref().set({
+        users: {
+            userOneName: userOneName,
+            userTwoName: userTwoName,
+            userOneChoice: userOneChoice,
+            userTwoChoice: userTwoChoice,
+            onePick: onePick,
+            twoPick: twoPick,
+            userOnePicked: userOnePicked,
+            userTwoPicked: userTwoPicked,
+        },
         scores: {
             user1wins: oneWins,
-            user1losses: oneLosses,
             user2wins: twoWins,
-            user2losses: twoLosses,
             tieGames: ties,
             gameCount: gameCounter,
         },
     });
 }
-// }
 // });
-

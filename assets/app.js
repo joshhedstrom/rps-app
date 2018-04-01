@@ -1,6 +1,5 @@
 // $(document).ready(function() {
 
-
 const config = {
     apiKey: "AIzaSyA-wBibZXmEuNijBHLwe_2rcgNDwZ1PZE8",
     authDomain: "rps-app-e21df.firebaseapp.com",
@@ -30,7 +29,6 @@ let twoWins = 0;
 let gameCounter = 0;
 let oneActive = false;
 
-
 database.ref("/users").once('value').then(function(snap) {
     if (snap.val() == null) {
         oneActive = true;
@@ -54,12 +52,15 @@ database.ref("/users").once('value').then(function(snap) {
         });
         console.log("found users null")
         $('#playerOneDiv').attr('style', 'display: block;');
+        return;
 
     } else if (snap.val().users !== null) {
         updateStats();
         console.log("users not null")
         $('#playerTwoDiv').attr('style', 'display: block;');
+        return;
     }
+    return;
 })
 
 $('#submit').click(function(event) {
@@ -69,15 +70,13 @@ $('#submit').click(function(event) {
         // $('#playerOneDiv').attr('style', 'display: block;');
         $('#nameInput').val("");
         console.log("userOneActive")
-        $('#oneName').text(oneName);
-        updateStats();
+        userOne();
     } else if (!oneActive) {
         userTwoName = $('#nameInput').val().trim();
         // $('#playerTwoDiv').attr('style', 'display: block;');
         $('#nameInput').val("");
         console.log("userTwoActive")
-        $('#twoName').text(twoName);
-        updateStats();
+        userTwo();
     }
     // else if (userOneActive && userTwoActive) {
     //     $('#topMessage').text("Sorry, the game is already in use! \n Try again in a few minutes.")
@@ -134,32 +133,26 @@ $('#twoScissors').click(function() {
     // updateStats();
 });
 
-function gameLoop(userOneChoice, userTwoChoice) {
+//----------------------------------------------------------------------------------------------
+//game functions
 
+function gameLoop(userOneChoice, userTwoChoice) {
     if (userOneChoice === userTwoChoice) {
         tieGame();
-
     } else if (userOneChoice === "rock" && userTwoChoice === "scissors") {
         userOneWins();
-
     } else if (userOneChoice === "rock" && userTwoChoice === "paper") {
         userTwoWins();
-
     } else if (userOneChoice === "paper" && userTwoChoice === "rock") {
         userOneWins();
-
     } else if (userOneChoice === "paper" && userTwoChoice === "scissors") {
         userTwoWins();
-
     } else if (userOneChoice === "scissors" && userTwoChoice === "rock") {
         userTwoWins();
-
     } else if (userOneChoice === "scissors" && userTwoChoice === "paper") {
         userOneWins();
-
     }
 }
-
 
 function userOneWins() {
     $('.message').text("Player One Wins!")
@@ -168,7 +161,6 @@ function userOneWins() {
     userOneWinsPicked = false;
     userTwoPicked = false;
     resetGame();
-    updateStats();
 }
 
 function userTwoWins() {
@@ -178,7 +170,6 @@ function userTwoWins() {
     userOnePicked = false;
     userTwoPicked = false;
     resetGame();
-    updateStats();
 }
 
 function tieGame() {
@@ -186,21 +177,35 @@ function tieGame() {
     userOnePicked = false;
     userTwoPicked = false;
     resetGame();
+}
+
+function check() {
+    console.log("check")
+    if (userOnePicked && userTwoPicked) {
+        gameLoop(onePick, twoPick);
+    } else {
+        $('#message').text("Waiting for the other player's selection...");
+    }
     updateStats();
 }
 
-
 function resetGame() {
+    console.log("reset game")
+    onePick = "";
+    twoPick = "";
     $("#oneChoice, #twoChoice").text("Choose your Weapon!");
     if (gameCounter == 7) {
         $('#gameElement').attr('style', 'display: none;');
         $('.message').text("Thanks for playing! " + userOneName + " had " + oneWins + " wins, and " + userTwoName + " had " + twoWins + " wins.")
     }
-
+    updateStats();
 }
+
+//--------------------------------------------------------------------------------------------------------
 
 function userOne() {
     database.ref().on("value", function(snapshot) {
+        check();
         console.log("changing 1")
         userTwoName = snapshot.val().users.userTwoName;
         userTwoChoice = snapshot.val().users.userTwoChoice;
@@ -209,13 +214,14 @@ function userOne() {
         twoWins = snapshot.val().scores.user2wins;
         $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.user1wins);
         $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.user2wins);
-        // return userTwoName, userTwoChoice, twoPick, userTwoPicked, twoWins;
     });
     updateStats();
+    // return;
 }
 
 function userTwo() {
     database.ref().on("value", function(snapshot) {
+        check();
         console.log("changing 2")
         userOneName = snapshot.val().users.userOneName;
         userOneChoice = snapshot.val().users.userOneChoice;
@@ -224,20 +230,10 @@ function userTwo() {
         oneWins = snapshot.val().scores.user1wins;
         $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.user1wins);
         $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.user2wins);
-        // return userOneName, userOneChoice, onePick, userOnePicked, oneWins;
     });
     updateStats();
+    return;
 }
-
-
-function check() {
-    if (userOnePicked && userTwoPicked) {
-        gameLoop(onePick, twoPick);
-    } else {
-        $('#message').text("Waiting for the other player's selection...");
-    }
-}
-
 
 function updateStats() {
     database.ref().set({
@@ -257,5 +253,6 @@ function updateStats() {
             gameCount: gameCounter,
         },
     });
+    return;
 }
 // });

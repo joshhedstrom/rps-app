@@ -24,6 +24,7 @@ let userTwoPicked = false;
 
 let oneWins = 0;
 let twoWins = 0;
+let ties = 0;
 let gameCounter = 0;
 let oneActive = false;
 
@@ -71,47 +72,56 @@ $('#oneRock').click(function() {
     onePick = "rock";
     $('#oneChoice').text(onePick);
     userOnePicked = true;
-    userOne();
-    // check();
+    // userOne();
+    checkAll();
 });
 $('#onePaper').click(function() {
     onePick = "paper";
     $('#oneChoice').text(onePick);
     userOnePicked = true;
-    userOne();
-    // check();
+    // userOne();
+    checkAll();
 });
 $('#oneScissors').click(function() {
     onePick = "scissors";
     $('#oneChoice').text(onePick);
     userOnePicked = true;
-    userOne();
-    // check();
+    // userOne();
+    checkAll();
 });
 $('#twoRock').click(function() {
     twoPick = "rock";
     $('#twoChoice').text(twoPick);
     userTwoPicked = true;
-    userTwo();
-    // check();
+    // userTwo();
+    checkAll();
 });
 $('#twoPaper').click(function() {
     twoPick = "paper";
     $('#twoChoice').text(twoPick);
     userTwoPicked = true;
-    userTwo();
-    // check();
+    // userTwo();
+    checkAll();
 });
 $('#twoScissors').click(function() {
     twoPick = "scissors";
     $('#twoChoice').text(twoPick);
     userTwoPicked = true;
-    userTwo();
-    // check();
+    // userTwo();
+    checkAll();
 });
 
 //----------------------------------------------------------------------------------------------
 //game functions
+function check() {
+    console.log("check")
+    if (userOnePicked && userTwoPicked) {
+        console.log("ran game loop")
+        gameLoop(onePick, twoPick);
+    } else {
+        $('.message').text("Waiting for the other player's selection...");
+    }
+}
 
 function gameLoop(userOneChoice, userTwoChoice) {
     if (userOneChoice === userTwoChoice) {
@@ -133,55 +143,43 @@ function gameLoop(userOneChoice, userTwoChoice) {
 }
 
 function userOneWins() {
-    $('.message').text("Player One Wins!")
+    $('#wonMessage').text("Player One Wins!")
+    console.log("one won");
     oneWins++;
     gameCounter++;
-    userOnePicked = false;
-    userTwoPicked = false;
     resetGame();
 }
 
 function userTwoWins() {
-    $('.message').text("Player Two Wins!")
+    $('#wonMessage').text("Player Two Wins!")
+    console.log("two won")
     twoWins++;
     gameCounter++;
-    userOnePicked = false;
-    userTwoPicked = false;
     resetGame();
 }
 
 function tieGame() {
-    $('.message').text("Tie Game!")
-    userOnePicked = false;
-    userTwoPicked = false;
+    $('#wonMessage').text("Tie Game!")
+    console.log("tie")
     resetGame();
 }
 
-function check() {
-    console.log("check")
-    if (userOnePicked && userTwoPicked) {
-        gameLoop(onePick, twoPick);
-    } else {
-        $('#message').text("Waiting for the other player's selection...");
-    }
-    // updateStats();
-}
-
 function resetGame() {
+    userOnePicked = false;
+    userTwoPicked = false;
     if (oneActive) {
         userOne();
     } else if (!oneActive) {
         userTwo();
     }
     console.log("reset game")
-        // onePick = "";
-        // twoPick = "";
+    onePick = "";
+    twoPick = "";
     $("#oneChoice, #twoChoice").text("Choose your Weapon!");
-    if (gameCounter == 7) {
-        $('#gameElement').attr('style', 'display: none;');
-        $('#topMessage').text("Thanks for playing! " + userOneName + " had " + oneWins + " wins, and " + userTwoName + " had " + twoWins + " wins.")
-    }
-    // updateStats();
+    // if (gameCounter == 7) {
+    //     $('#gameElement').attr('style', 'display: none;');
+    //     $('#topMessage').text("Thanks for playing! " + userOneName + " had " + oneWins + " wins, and " + userTwoName + " had " + twoWins + " wins.")
+    // }
 }
 
 //--------------------------------------------------------------------------------------------------------
@@ -195,8 +193,11 @@ function userOne() {
         userTwoPicked = snapshot.val().users.userTwoPicked;
         twoWins = snapshot.val().scores.twoWins;
         gameCounter = snapshot.val().scores.gameCounter;
+        ties = snapshot.val().scores.ties;
         $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.oneWins);
         $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.twoWins);
+        $('#gameCounter').text("Rounds Played: " + gameCounter);
+
     });
     updateStats();
     return;
@@ -211,8 +212,10 @@ function userTwo() {
         userOnePicked = snapshot.val().users.userOnePicked;
         oneWins = snapshot.val().scores.oneWins;
         gameCounter = snapshot.val().scores.gameCounter;
+        ties = snapshot.val().scores.ties;
         $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.oneWins);
         $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.twoWins);
+        $('#gameCounter').text("Rounds Played: " + gameCounter);
     });
     updateStats();
     return;
@@ -231,17 +234,30 @@ function updateStats() {
         scores: {
             oneWins: oneWins,
             twoWins: twoWins,
+            ties: ties,
             gameCounter: gameCounter,
         },
     });
     return;
 }
 
-database.ref().on("value", function(){
-    if (oneActive) {
-        userOne();
-    } else if (!oneActive){
-        userTwo();
-    }
+database.ref().on("value", function() {
+    checkAll();
 })
+
+function checkAll() {
+    database.ref().once("value", function(snapshot) {
+        if (userOnePicked && userTwoPicked) {
+            gameLoop(onePick, twoPick);
+        } else {
+            if (snapshot.val().scores.oneWins > oneWins) {
+                userOneWins();
+            } else if (snapshot.val().scores.twoWins > twoWins) {
+                userTwoWins();
+            } else if (snapshot.val().scores.ties > ties) {
+                tieGame();
+            }
+        }
+    })
+}
 // });

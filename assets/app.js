@@ -142,6 +142,7 @@ function userOneWins() {
     oneWins++;
     gameCounter++;
     resetGame();
+    return;
 }
 
 function userTwoWins() {
@@ -150,14 +151,16 @@ function userTwoWins() {
     twoWins++;
     gameCounter++;
     resetGame();
+    return;
 }
 
 function tieGame() {
     $('#wonMessage').text("Tie Game!")
     ties++;
     console.log("tie")
-    updateStats();
+    // updateStats();
     resetGame();
+    return;
 }
 
 function resetGame() {
@@ -179,12 +182,14 @@ function resetGame() {
     //     $('#gameElement').attr('style', 'display: none;');
     //     $('#topMessage').text("Thanks for playing! " + userOneName + " had " + oneWins + " wins, and " + userTwoName + " had " + twoWins + " wins.")
     // }
+    return;
 }
 
 //--------------------------------------------------------------------------------------------------------
 
 function userOne() {
     database.ref().once("value", function(snapshot) {
+        checkAll();
         console.log("changing 1")
         userTwoName = snapshot.val().users.userTwoName;
         twoPick = snapshot.val().users.twoPick;
@@ -198,6 +203,7 @@ function userOne() {
 
 function userTwo() {
     database.ref().once("value", function(snapshot) {
+        checkAll();
         console.log("changing 2")
         userOneName = snapshot.val().users.userOneName;
         onePick = snapshot.val().users.onePick;
@@ -231,6 +237,7 @@ function updateStats() {
 
 database.ref().on("value", function() {
     checkAll();
+    return;
 })
 
 function checkAll() {
@@ -255,4 +262,8 @@ function checkAll() {
         }
     })
 }
+
+$(window).on("unload", function(e) {
+    database.ref().set({});
+});
 // });

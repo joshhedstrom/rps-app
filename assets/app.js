@@ -73,55 +73,49 @@ $('#oneRock').click(function() {
     $('#oneChoice').text(onePick);
     userOnePicked = true;
     userOne();
-    // checkAll();
 });
 $('#onePaper').click(function() {
     onePick = "paper";
     $('#oneChoice').text(onePick);
     userOnePicked = true;
     userOne();
-    // checkAll();
 });
 $('#oneScissors').click(function() {
     onePick = "scissors";
     $('#oneChoice').text(onePick);
     userOnePicked = true;
     userOne();
-    // checkAll();
 });
 $('#twoRock').click(function() {
     twoPick = "rock";
     $('#twoChoice').text(twoPick);
     userTwoPicked = true;
     userTwo();
-    // checkAll();
 });
 $('#twoPaper').click(function() {
     twoPick = "paper";
     $('#twoChoice').text(twoPick);
     userTwoPicked = true;
     userTwo();
-    // checkAll();
 });
 $('#twoScissors').click(function() {
     twoPick = "scissors";
     $('#twoChoice').text(twoPick);
     userTwoPicked = true;
     userTwo();
-    // checkAll();
 });
 
 //----------------------------------------------------------------------------------------------
 //game functions
-function check() {
-    console.log("check")
-    if (userOnePicked && userTwoPicked) {
-        console.log("ran game loop")
-        gameLoop(onePick, twoPick);
-    } else {
-        $('.message').text("Waiting for the other player's selection...");
-    }
-}
+// function check() {
+//     console.log("check")
+//     if (userOnePicked && userTwoPicked) {
+//         console.log("ran game loop")
+//         gameLoop(onePick, twoPick);
+//     } else {
+//         $('.message').text("Waiting for the other player's selection...");
+//     }
+// }
 
 function gameLoop(userOneChoice, userTwoChoice) {
     if (userOneChoice === userTwoChoice) {
@@ -160,13 +154,18 @@ function userTwoWins() {
 
 function tieGame() {
     $('#wonMessage').text("Tie Game!")
+    ties++;
     console.log("tie")
+    updateStats();
     resetGame();
 }
 
 function resetGame() {
     userOnePicked = false;
     userTwoPicked = false;
+    $("#user1sessionWins").text(userOneName + "'s Wins: " + oneWins);
+    $("#user2sessionWins").text(userTwoName + "'s Wins: " + twoWins);
+    $('#gameCounter').text("Rounds Played: " + gameCounter);
     if (oneActive) {
         userOne();
     } else if (!oneActive) {
@@ -186,18 +185,12 @@ function resetGame() {
 
 function userOne() {
     database.ref().once("value", function(snapshot) {
-        check();
         console.log("changing 1")
         userTwoName = snapshot.val().users.userTwoName;
         twoPick = snapshot.val().users.twoPick;
         userTwoPicked = snapshot.val().users.userTwoPicked;
         twoWins = snapshot.val().scores.twoWins;
-        gameCounter = snapshot.val().scores.gameCounter;
         ties = snapshot.val().scores.ties;
-        $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.oneWins);
-        $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.twoWins);
-        $('#gameCounter').text("Rounds Played: " + gameCounter);
-
     });
     updateStats();
     return;
@@ -205,17 +198,12 @@ function userOne() {
 
 function userTwo() {
     database.ref().once("value", function(snapshot) {
-        checkAll();
         console.log("changing 2")
         userOneName = snapshot.val().users.userOneName;
         onePick = snapshot.val().users.onePick;
         userOnePicked = snapshot.val().users.userOnePicked;
         oneWins = snapshot.val().scores.oneWins;
-        gameCounter = snapshot.val().scores.gameCounter;
         ties = snapshot.val().scores.ties;
-        $("#user1sessionWins").text(userOneName + "'s Wins: " + snapshot.val().scores.oneWins);
-        $("#user2sessionWins").text(userTwoName + "'s Wins: " + snapshot.val().scores.twoWins);
-        $('#gameCounter').text("Rounds Played: " + gameCounter);
     });
     updateStats();
     return;
@@ -256,6 +244,13 @@ function checkAll() {
                 userTwoWins();
             } else if (snapshot.val().scores.ties > ties) {
                 tieGame();
+            } else {
+                // updateStats();
+                if (oneActive) {
+                    // userOne();
+                } else if (!oneActive){
+                    // userTwo();
+                }
             }
         }
     })

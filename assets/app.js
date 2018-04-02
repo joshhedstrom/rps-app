@@ -72,43 +72,43 @@ $('#oneRock').click(function() {
     onePick = "rock";
     $('#oneChoice').text(onePick);
     userOnePicked = true;
-    // userOne();
-    checkAll();
+    userOne();
+    // checkAll();
 });
 $('#onePaper').click(function() {
     onePick = "paper";
     $('#oneChoice').text(onePick);
     userOnePicked = true;
-    // userOne();
-    checkAll();
+    userOne();
+    // checkAll();
 });
 $('#oneScissors').click(function() {
     onePick = "scissors";
     $('#oneChoice').text(onePick);
     userOnePicked = true;
-    // userOne();
-    checkAll();
+    userOne();
+    // checkAll();
 });
 $('#twoRock').click(function() {
     twoPick = "rock";
     $('#twoChoice').text(twoPick);
     userTwoPicked = true;
-    // userTwo();
-    checkAll();
+    userTwo();
+    // checkAll();
 });
 $('#twoPaper').click(function() {
     twoPick = "paper";
     $('#twoChoice').text(twoPick);
     userTwoPicked = true;
-    // userTwo();
-    checkAll();
+    userTwo();
+    // checkAll();
 });
 $('#twoScissors').click(function() {
     twoPick = "scissors";
     $('#twoChoice').text(twoPick);
     userTwoPicked = true;
-    // userTwo();
-    checkAll();
+    userTwo();
+    // checkAll();
 });
 
 //----------------------------------------------------------------------------------------------
@@ -205,7 +205,7 @@ function userOne() {
 
 function userTwo() {
     database.ref().once("value", function(snapshot) {
-        check();
+        checkAll();
         console.log("changing 2")
         userOneName = snapshot.val().users.userOneName;
         onePick = snapshot.val().users.onePick;

@@ -107,15 +107,6 @@ $('#twoScissors').click(function() {
 
 //----------------------------------------------------------------------------------------------
 //game functions
-// function check() {
-//     console.log("check")
-//     if (userOnePicked && userTwoPicked) {
-//         console.log("ran game loop")
-//         gameLoop(onePick, twoPick);
-//     } else {
-//         $('.message').text("Waiting for the other player's selection...");
-//     }
-// }
 
 function gameLoop(userOneChoice, userTwoChoice) {
     if (userOneChoice === userTwoChoice) {
@@ -136,13 +127,18 @@ function gameLoop(userOneChoice, userTwoChoice) {
     return;
 }
 
+function check() {
+    console.log("gameloop on check")
+    if (userOnePicked && userTwoPicked) {
+            gameLoop(onePick, twoPick);
+        }
+}
 function userOneWins() {
     $('#wonMessage').text("Player One Wins!")
     console.log("one won");
     oneWins++;
     gameCounter++;
     resetGame();
-    return;
 }
 
 function userTwoWins() {
@@ -151,16 +147,13 @@ function userTwoWins() {
     twoWins++;
     gameCounter++;
     resetGame();
-    return;
 }
 
 function tieGame() {
     $('#wonMessage').text("Tie Game!")
-    ties++;
     console.log("tie")
-    // updateStats();
+    ties++;
     resetGame();
-    return;
 }
 
 function resetGame() {
@@ -189,7 +182,6 @@ function resetGame() {
 
 function userOne() {
     database.ref().once("value", function(snapshot) {
-        checkAll();
         console.log("changing 1")
         userTwoName = snapshot.val().users.userTwoName;
         twoPick = snapshot.val().users.twoPick;
@@ -198,12 +190,12 @@ function userOne() {
         ties = snapshot.val().scores.ties;
     });
     updateStats();
+        checkAll();
     return;
 }
 
 function userTwo() {
     database.ref().once("value", function(snapshot) {
-        checkAll();
         console.log("changing 2")
         userOneName = snapshot.val().users.userOneName;
         onePick = snapshot.val().users.onePick;
@@ -212,6 +204,7 @@ function userTwo() {
         ties = snapshot.val().scores.ties;
     });
     updateStats();
+        checkAll();
     return;
 }
 
@@ -236,14 +229,17 @@ function updateStats() {
 }
 
 database.ref().on("value", function() {
+    // console.log("value changed")
     checkAll();
     return;
 })
 
 function checkAll() {
     database.ref().once("value", function(snapshot) {
+        console.log("checked all")
         if (userOnePicked && userTwoPicked) {
             gameLoop(onePick, twoPick);
+            console.log("gameloop on value")
         } else {
             if (snapshot.val().scores.oneWins > oneWins) {
                 userOneWins();

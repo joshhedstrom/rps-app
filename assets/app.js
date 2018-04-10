@@ -21,12 +21,12 @@ $(document).ready(function() {
     database.ref().once("value", function(snap) {
         if (snap.val().users.oneActive == false) {
             database.ref('users/oneActive').set(true);
-            $('#playerOneDiv').attr('style', 'display: block;');
+            // $('#playerOneDiv').attr('style', 'display: block;');
             oneActive = true;
 
         } else if (snap.val().users.twoActive == false) {
             database.ref('users/twoActive').set(true);
-            $('#playerTwoDiv').attr('style', 'display: block;');
+            // $('#playerTwoDiv').attr('style', 'display: block;');
             twoActive = true;
 
         } else if (snap.val().users.oneActive == true && snap.val().users.twoActive == true) {
@@ -41,15 +41,15 @@ $(document).ready(function() {
         if (oneActive) {
             let name = $('#nameInput').val().trim();
             database.ref('users/oneName').set(name);
-            // $('#playerOneDiv').attr('style', 'display: block;');
+            $('#playerOneDiv').attr('style', 'display: block;');
             $('#startElement').attr('style', 'display: none');
-            // $('#nameInput').val("");
+            $('#nameInput').val("");
         } else if (twoActive) {
             let name = $('#nameInput').val().trim();
             database.ref('users/twoName').set(name);
-            // $('#playerTwoDiv').attr('style', 'display: block;');
+            $('#playerTwoDiv').attr('style', 'display: block;');
             $('#startElement').attr('style', 'display: none');
-            // $('#nameInput').val("");
+            $('#nameInput').val("");
         }
     });
 
@@ -134,6 +134,8 @@ $(document).ready(function() {
             database.ref('scores/oneWins').set(score);
             database.ref('scores/gameCounter').set(count);
             database.ref('scores/statsMessage').set("Player One Won!");
+            $('#oneChoice').text("You won!");
+            $('#twoChoice').text("Sorry, you lost")
 
         })
         resetGame();
@@ -186,8 +188,8 @@ $(document).ready(function() {
     database.ref().on("value", function(snap) {
         $('.oneWins').text(snap.val().users.oneName + "'s wins: " + snap.val().scores.oneWins)
         $('.twoWins').text(snap.val().users.twoName + "'s wins: " + snap.val().scores.twoWins)
-        $('.ties').text(snap.val().scores.ties)
-        $('.gameCounter').text(snap.val().scores.gameCounter)
+        $('.ties').text("Ties: " + snap.val().scores.ties)
+        $('.gameCounter').text("Rounds Played: " + snap.val().scores.gameCounter)
         $('.statsMessage').text(snap.val().scores.statsMessage)
 
         if (snap.val().scores.gameCounter === 3) {

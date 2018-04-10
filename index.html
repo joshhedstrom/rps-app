@@ -6,63 +6,64 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>rps-app</title>
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 		<link rel="stylesheet" href="./assets/style.css">
 	</head>
 	<body>
 		<header>
-			<nav>
-				
-			</nav>
-			<h1 class="text-center">A Live Rock-Paper-Scissors Game</h1>
+			<h1 class="center-align">A Live Rock-Paper-Scissors Game</h1>
 		</header>
 		<br>
 		<main class="container">
 			<div class="row">
-				<section id="startElement" class="col-12">
+				<section id="startElement" class="center-align">
 					<h4 id="topMessage">Ready to Play? Enter your name below:</h4>
 					<div class="form-group row">
-						<label for="example-text-input" class="col-1 col-form-label">Name:</label>
-						<div class="col-9">
-							<input class="form-control" type="text" placeholder="Enter your name" id="nameInput">
+						<div class="input-field col s12 m8">
+							<input id="nameInput" type="text" class=" black-text validate">
+							<label class="black-text" for="nameInput">Name:</label>
 						</div>
-						<div class="col-2">
-							<button class="btn btn-secondary" id="submit">Submit</button>
+						<div class="col s12 m4">
+							<button class="btn-large black-text green darken-4" id="submit">Submit</button>
 						</div>
 					</div>
 				</section>
 			</div>
-			<div class="row" id="gameElement">
+			<div id="gameElement">
 				<div class="row">
-					<div id="playerOneDiv" style="display: none;" class="col pull-left">
-						<h4 class="message"></h4>
-						<h5 id="oneName">Player One:</h5>
-						<a id="oneRock"><img src="./assets/rock.jpg" alt="player one rock"></a>
-						<a id="onePaper"><img src="./assets/paper.jpg" alt="player one paper"></a>
-						<a id="oneScissors"><img src="./assets/scissors.jpg" alt="player one scissors"></a>
-						<h6 id="oneChoice">Choose your Weapon!</h6>
-						<div class="stats col pull-right">
+					<div id="playerOneDiv" style="display: none;">
+						<div class="element col s12 m6 center-align">
+							<h4 class="message"></h4>
+							<h5 id="oneName">Player One:</h5>
+							<a id="oneRock"><img src="./assets/rock.jpg" alt="player one rock"></a>
+							<a id="onePaper"><img src="./assets/paper.jpg" alt="player one paper"></a>
+							<a id="oneScissors"><img src="./assets/scissors.jpg" alt="player one scissors"></a>
+							<h6 id="oneChoice">Choose your Weapon!</h6>
+						</div>
+						<div class="element stats col s12 m6">
 							<p class="oneWins">Player 1 Wins: 0</p>
 							<p class="twoWins">Player 2 Wins: 2</p>
-							<p>Ties: </p><p id="ties"> 0</p>
-							<p>Rounds Played: </p><p class="gameCounter">0</p>
+							<p id="ties"> 0</p>
+							<p class="gameCounter">0</p>
 							<p class="statsMessage">Ready to play?</p>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div id="playerTwoDiv" style="display: none;" class="col pull-left">
-						<h4 class="message"></h4>
-						<h5 id="twoName">Player Two:</h5>
-						<a id="twoRock"><img src="./assets/rock.jpg" alt="player two rock"></a>
-						<a id="twoPaper"><img src="./assets/paper.jpg" alt="player two paper"></a>
-						<a id="twoScissors"><img src="./assets/scissors.jpg" alt="player two scissors"></a>
-						<h6 id="twoChoice">Choose your Weapon!</h6>
-						<div class="stats col pull-right">
+					<div id="playerTwoDiv" style="display: none;">
+						<div class="element col s12 m6 center-align">
+							<h4 class="message"></h4>
+							<h5 id="twoName">Player Two:</h5>
+							<a id="twoRock"><img src="./assets/rock.jpg" alt="player two rock"></a>
+							<a id="twoPaper"><img src="./assets/paper.jpg" alt="player two paper"></a>
+							<a id="twoScissors"><img src="./assets/scissors.jpg" alt="player two scissors"></a>
+							<h6 id="twoChoice">Choose your Weapon!</h6>
+						</div>
+						<div class="element stats col s12 m6">
 							<p class="oneWins">Player 1 Wins: 0</p>
 							<p class="twoWins">Player 2 Wins: 2</p>
-							<p>Ties: </p><p id="ties"> 0</p>
-							<p>Rounds Played: </p><p class="gameCounter">0</p>
+							<p id="ties">0</p>
+							<p class="gameCounter">0</p>
 							<p class="statsMessage">Ready to play?</p>
 						</div>
 					</div>
@@ -78,6 +79,7 @@
 		src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 		<script src="./assets/app.js"></script>
 	</body>
 </html>

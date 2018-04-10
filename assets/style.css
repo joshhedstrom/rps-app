@@ -1,6 +1,6 @@
 body
 {
-    background-color: tan;
+    background-color: #689f38;
 }
 
 img
@@ -21,11 +21,18 @@ img:hover
     border-color: black;
 }
 
-.stats
+.element
 {
+    background-color: #387002;
     border-width: 2px;
     border-style: solid;
     border-color: black;
     border-radius: 15px;
-    margin: 2px;
+    height: 300px;
+}
+
+.stats
+{
+    font-size: 22px;
+    font-weight: bold;
 }

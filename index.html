@@ -32,39 +32,41 @@
 					</div>
 				</section>
 			</div>
-			<h4 id="wonMessage"></h4>
-			<h3 id="gameCounter"></h3>
-			
-			<div class="row text-center" id="gameElement">
-				<div class="col">
-					<div id="playerOneDiv" style="display: none;">
+			<div class="row" id="gameElement">
+				<div class="row">
+					<div id="playerOneDiv" style="display: none;" class="col pull-left">
 						<h4 class="message"></h4>
 						<h5 id="oneName">Player One:</h5>
 						<a id="oneRock"><img src="./assets/rock.jpg" alt="player one rock"></a>
 						<a id="onePaper"><img src="./assets/paper.jpg" alt="player one paper"></a>
 						<a id="oneScissors"><img src="./assets/scissors.jpg" alt="player one scissors"></a>
 						<h6 id="oneChoice">Choose your Weapon!</h6>
-						<div class="row">
-							<p class="col stats" id="user1sessionWins">Player 1 Wins: 0</p>
+						<div class="stats col pull-right">
+							<p class="oneWins">Player 1 Wins: 0</p>
+							<p class="twoWins">Player 2 Wins: 2</p>
+							<p>Ties: </p><p id="ties"> 0</p>
+							<p>Rounds Played: </p><p class="gameCounter">0</p>
+							<p class="statsMessage">Ready to play?</p>
 						</div>
 					</div>
 				</div>
-				<div class="col">
-					<div id="playerTwoDiv" style="display: none;">
+				<div class="row">
+					<div id="playerTwoDiv" style="display: none;" class="col pull-left">
 						<h4 class="message"></h4>
 						<h5 id="twoName">Player Two:</h5>
 						<a id="twoRock"><img src="./assets/rock.jpg" alt="player two rock"></a>
 						<a id="twoPaper"><img src="./assets/paper.jpg" alt="player two paper"></a>
 						<a id="twoScissors"><img src="./assets/scissors.jpg" alt="player two scissors"></a>
 						<h6 id="twoChoice">Choose your Weapon!</h6>
-						<div class="row">
-							<p class="col stats" id="user2sessionWins">Player 2 Wins: 0</p>
+						<div class="stats col pull-right">
+							<p class="oneWins">Player 1 Wins: 0</p>
+							<p class="twoWins">Player 2 Wins: 2</p>
+							<p>Ties: </p><p id="ties"> 0</p>
+							<p>Rounds Played: </p><p class="gameCounter">0</p>
+							<p class="statsMessage">Ready to play?</p>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div id="statsElement">
-				
 			</div>
 			<div class="row" id="chatBox"></div>
 		</main>

@@ -126,7 +126,6 @@ $(document).ready(function() {
     //RESULT FUNCTIONS----------------------------------------------------------------------------------------
 
     function userOneWins() {
-        $('#wonMessage').text("Player One Wins!")
         database.ref().once('value', function(snap) {
             let score = snap.val().scores.oneWins;
             let count = snap.val().scores.gameCounter;
@@ -134,13 +133,13 @@ $(document).ready(function() {
             count++;
             database.ref('scores/oneWins').set(score);
             database.ref('scores/gameCounter').set(count);
+            database.ref('scores/statsMessage').set("Player One Won!");
 
         })
         resetGame();
     }
 
     function userTwoWins() {
-        $('#wonMessage').text("Player Two Wins!")
         database.ref().once('value', function(snap) {
             let score = snap.val().scores.twoWins;
             let count = snap.val().scores.gameCounter;
@@ -148,16 +147,17 @@ $(document).ready(function() {
             count++;
             database.ref('scores/twoWins').set(score);
             database.ref('scores/gameCounter').set(count);
-        })
+            database.ref('scores/statsMessage').set("Player Two Won!");
+        });
         resetGame();
     }
 
     function tieGame() {
-        $('#wonMessage').text("Tie Game!")
         database.ref().once('value', function(snap) {
             let score = snap.val().scores.ties;
             score++;
             database.ref('scores/ties').set(score);
+            database.ref('scores/statsMessage').set("Tie Game!");
         })
         resetGame();
     }
@@ -167,15 +167,6 @@ $(document).ready(function() {
     function resetGame() {
         database.ref('users/userOnePicked').set(false);
         database.ref('users/userTwoPicked').set(false);
-        database.ref().once("value", function(snap) {
-            $("#user1sessionWins").text(snap.val().users.oneneName + "'s Wins: " + snap.val().scores.oneWins);
-            $("#user2sessionWins").text(snap.val().users.twoName + "'s Wins: " + snap.val().scores.twoWins);
-            $('#gameCounter').text("Rounds Played: " + snap.val().scores.gameCounter);
-            if (snap.val().scores.gameCounter === 3) {
-                endGame();
-            }
-        })
-        $("#oneChoice, #twoChoice").text("Choose your Weapon!");
     }
 
     //END GAME------------------------------------------------------------------------------------------------
@@ -192,28 +183,16 @@ $(document).ready(function() {
 
     //ON VALUE CHANGE-----------------------------------------------------------------------------------------
 
-    database.ref('scores/oneWins').on("value", function(snap) {
-        // $("#user1sessionWins").text(snap.val().users.oneName + "'s Wins: " + snap.val().scores.oneWins);
-        // $("#user2sessionWins").text(snap.val().users.userTwoName + "'s Wins: " + snap.val().scores.twoWins);
-        // $('#gameCounter').text("Rounds Played: " + snap.val().scores.gameCounter);
+    database.ref().on("value", function(snap) {
+        $('.oneWins').text(snap.val().users.oneName + "'s wins: " + snap.val().scores.oneWins)
+        $('.twoWins').text(snap.val().users.twoName + "'s wins: " + snap.val().scores.twoWins)
+        $('.ties').text(snap.val().scores.ties)
+        $('.gameCounter').text(snap.val().scores.gameCounter)
+        $('.statsMessage').text(snap.val().scores.statsMessage)
 
-        $('#wonMessage').text("Player One Wins!");
-    });
-
-    database.ref('scores/twoWins').on("value", function(snap) {
-        // $("#user1sessionWins").text(snap.val().users.userOneName + "'s Wins: " + snap.val().scores.oneWins);
-        // $("#user2sessionWins").text(snap.val().users.twoName + "'s Wins: " + snap.val().scores.twoWins);
-        // $('#gameCounter').text("Rounds Played: " + snap.val().scores.gameCounter);
-        // 
-        $('#wonMessage').text("Player Two Wins!");
-    });
-
-    database.ref('scores/ties').on("value", function(snap) {
-        // $("#user1sessionWins").text(snap.val().users.userOneName + "'s Wins: " + snap.val().scores.oneWins);
-        // $("#user2sessionWins").text(snap.val().users.userTwoName + "'s Wins: " + snap.val().scores.twoWins);
-        // $('#gameCounter').text("Rounds Played: " + snap.val().scores.gameCounter);
-
-        $('#wonMessage').text("Tie Game!");
+        if (snap.val().scores.gameCounter === 3) {
+            endGame();
+        }
     });
 
     //ON WINDOW CLOSE-----------------------------------------------------------------------------------------
@@ -230,6 +209,7 @@ $(document).ready(function() {
                 twoWins: 0,
                 ties: 0,
                 gameCounter: 0,
+                statsMessage: "",
             }
         });
     });

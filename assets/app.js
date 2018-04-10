@@ -134,9 +134,6 @@ $(document).ready(function() {
             database.ref('scores/oneWins').set(score);
             database.ref('scores/gameCounter').set(count);
             database.ref('scores/statsMessage').set("Player One Won!");
-            $('#oneChoice').text("You won!");
-            $('#twoChoice').text("Sorry, you lost")
-
         })
         resetGame();
     }

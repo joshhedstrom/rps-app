@@ -194,6 +194,40 @@ $(document).ready(function() {
         }
     });
 
+    //MESSAGE TOASTS------------------------------------------------------------------------------------------
+
+    $('#chatSend').click(function(e) {
+        e.preventDefault();
+        if (oneActive) {
+            database.ref('users/oneMessage').set($('#chatText').val())
+        } else if (twoActive) {
+            database.ref('users/twoMessage').set($('#chatText').val())
+        }
+        $('#chatText').val("");
+    });
+
+    database.ref('users/oneMessage').on("value", function(snap) {
+        if (twoActive) {
+            M.toast({
+                html: 'Your opponent says: ' + snap.val(),
+                classes: 'rounded',
+                displayLength: 10000,
+            });
+
+        }
+    })
+
+    database.ref('users/twoMessage').on("value", function(snap) {
+        if (oneActive) {
+            M.toast({
+                html: 'Your opponent says: ' + snap.val(),
+                classes: 'rounded',
+                displayLength: 10000,
+            });
+
+        }
+    })
+
     //ON WINDOW CLOSE-----------------------------------------------------------------------------------------
 
     $(window).on("unload", function(e) {
@@ -202,6 +236,8 @@ $(document).ready(function() {
             users: {
                 oneActive: false,
                 twoActive: false,
+                oneMessage: "",
+                twoMessage: "",
             },
             scores: {
                 oneWins: 0,

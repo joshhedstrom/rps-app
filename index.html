@@ -7,6 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>rps-app</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="./assets/style.css">
 	</head>
 	<body>
@@ -69,7 +70,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="row" id="chatBox">
+			<div class="row center-align">
+				<div class="input-field col s8">
+					<i class="material-icons prefix">message</i>
+					<input id="chatText" type="text" class="validate">
+					<label for="icon_prefix" class="black-text">Send a message</label>
+				</div>
+				<div class="col s4">
+					<button class="btn-large black-text green darken-4" id="chatSend"><i class="material-icons prefix">send</i></button>
+				</div>
 				
 			</div>
 		</main>

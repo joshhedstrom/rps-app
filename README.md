@@ -1,10 +1,10 @@
 # A two person RPS App
 
-A two person live Rock-Paper-Scissors application!
+A two person live Rock-Paper-Scissors application, with a chat feature!
 
 ## Instructions
 
-Enter your name to get started, and then once a second person logs on, choose your weapon! Best out of 7 rounds wins!
+Enter your name to get started, and then once a second person logs on, choose your weapon. Best out of 7 rounds wins! Send messages to the other player in the chat feature.
 
 ## Built With
 

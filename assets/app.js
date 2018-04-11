@@ -189,7 +189,7 @@ $(document).ready(function() {
         $('.gameCounter').text("Rounds Played: " + snap.val().scores.gameCounter)
         $('.statsMessage').text(snap.val().scores.statsMessage)
 
-        if (snap.val().scores.gameCounter === 3) {
+        if (snap.val().scores.gameCounter === 7) {
             endGame();
         }
     });
